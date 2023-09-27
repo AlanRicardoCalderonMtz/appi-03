@@ -10,34 +10,34 @@ app.use(express.json())
 
 //Arreglo de objeto de categorias
 let categorias = [
-    {id:1, nombre:"cocina",descripcion:"Elementos para cocinar"},
-    {id:2, nombre:"Limpieza",descripcion:"Elementos para Limpieza"},
-    {id:3, nombre:"Eletronica",descripcion:"Elementos de Electronica"},
-    {id:4, nombre:"Ropa bebe",descripcion:"Elementos para bebe"},
-    {id:5, nombre:"Linea blanca",descripcion:"Elementos de linea blanca"},
-    {id:6, nombre:"Jardineria",descripcion:"Elementos para cocinar"},
-    {id:7, nombre:"Salud",descripcion:"Elementos de jardineria"},
-    {id:8, nombre:"Muebles",descripcion:"Elementos para la sala y demas "},
-    {id:9, nombre:"Lacteos",descripcion:"Elementos para beber"},
-    {id:10, nombre:"Licores",descripcion:"Elementos para fiestas"}
+    { id: 1, nombre: "cocina", descripcion: "Elementos para cocinar" },
+    { id: 2, nombre: "Limpieza", descripcion: "Elementos para Limpieza" },
+    { id: 3, nombre: "Eletronica", descripcion: "Elementos de Electronica" },
+    { id: 4, nombre: "Ropa bebe", descripcion: "Elementos para bebe" },
+    { id: 5, nombre: "Linea blanca", descripcion: "Elementos de linea blanca" },
+    { id: 6, nombre: "Jardineria", descripcion: "Elementos para cocinar" },
+    { id: 7, nombre: "Salud", descripcion: "Elementos de jardineria" },
+    { id: 8, nombre: "Muebles", descripcion: "Elementos para la sala y demas " },
+    { id: 9, nombre: "Lacteos", descripcion: "Elementos para beber" },
+    { id: 10, nombre: "Licores", descripcion: "Elementos para fiestas" }
 ]
 
 //Solicitud , respuesta
 app.get('/socios/v1/categorias', (req, res) => {
     //1° Verificar si existe categorias
-    if(categorias.length > 0){
+    if (categorias.length > 0) {
         //Existen categorias
         res.status(200).json({
-            estado:1,
-            mensaje:"Existen categorias",
+            estado: 1,
+            mensaje: "Existen categorias",
             //var : contenido
             categories: categorias
         })
-    }else{
+    } else {
         //No existen categorias
         res.status(404).json({
-            estado:0,
-            mensaje:"No se encontraron categorias",
+            estado: 0,
+            mensaje: "No se encontraron categorias",
             categories: categorias
 
         })
@@ -64,62 +64,55 @@ app.get('/socios/v1/categorias/:id', (req, res) => {
             mensaje: "Categoría encontrada",
             category: categoriaEncontrada
         });
-    } else{
+    } else {
         // Si no se encontró la categoría, devolver un mensaje de error en JSON
         res.status(404).json({
             estado: 0,
             mensaje: "Categoría no encontrada",
             category: null
         });
-    } 
+    }
 });
 
+//res.send('Crear una categoria');
 
+// 1° Crear un recurso - crear una categoria
+// 2° Requerimos:
+//      3° id = Generar un numero aleatorio
+//      4° nombre y descripción = cuerpo
 app.post('/socios/v1/categorias', (req, res) => {
     // Crear un recurso - Crear una categoria
-    //res.send('Crear una categoria');
-
-    // 1° Crear un recurso - crear una categoria
-    // 2° Requerimos:
-    //      3° id = Generar un numero aleatorio
-    //      4° nombre y descripción =
-
-    const {nombre, descripcion} = req.body
-    const id = Math.round(Math.random()*100);
+    const { nombre, descripcion } = req.body
+    const id = Math.round(Math.random() * 100);
     //Comprobar que el cliente (chrome, edge, insomnia, etc) => que el usuario es el 'programador'
-    if(nombre == undefined || descripcion == undefined){
+    if (nombre == undefined || descripcion == undefined) {
         //Hay un error en la solicitud por parte del programador
         res.status(400).json({
-            estado:0,
-            mensaje:"Faltan parametros en la solicitud",
+            estado: 0,
+            mensaje: "Faltan parametros en la solicitud",
         })
-    }else{
+    } else {
         //En js como se agregan elementos al array -> (push)
-        const categoria = {id:id,nombre:nombre,descripcion:descripcion}
+        const categoria = { id: id, nombre: nombre, descripcion: descripcion }
         const longitud_inicial = categorias.length;
         categorias.push(categoria)
-        if(categorias.length > longitud_inicial){
+        if (categorias.length > longitud_inicial) {
             //All bien por parte del cliente y servidor
             // 200 (todo ok) y 201(creado)
             res.status(201).json({
-                estado:1,
-                mensaje:"Categoria creada",
-                categoria:categoria
+                estado: 1,
+                mensaje: "Categoria creada",
+                categoria: categoria
             })
-        }else{
+        } else {
             //Error del servidor -> 'creador de la API o de la BD, Quien configura el servidor'
             // 500 -> error interno
             res.status(500).json({
-                estado:0,
-                mensaje:"Ocurrio un error desconocido"
+                estado: 0,
+                mensaje: "Ocurrio un error desconocido"
             })
         }
-
     }
-    
-    //req.params
-    //req.body
-    //req.query
 })
 
 app.put('/socios/v1/categorias/:id', (req, res) => {
@@ -128,34 +121,34 @@ app.put('/socios/v1/categorias/:id', (req, res) => {
 
     //id viene ? -> 'params'
     //nombre y descripción ? -> 'body'
-    const{id} = req.params;
-    const{nombre, descripcion} = req.body;
+    const { id } = req.params;
+    const { nombre, descripcion } = req.body;
     //verificar que nombre y descripcion vengan en el body
-    if(nombre==undefined || descripcion==undefined){
+    if (nombre == undefined || descripcion == undefined) {
         //
         res.status(400).json({
-            estado:0,
-            mensaje:"Faltan parametros en la solicitud"
+            estado: 0,
+            mensaje: "Faltan parametros en la solicitud"
         })
-    }else{
+    } else {
         const posActualizar = categorias.findIndex(categoria => categoria.id == id)
-        if(posActualizar != -1){
+        if (posActualizar != -1) {
             //Si encontro la categoria con el id buscado
             //Actualizar la categoria
-            categorias[posActualizar].nombre=nombre;
-            categorias[posActualizar].descripcion=descripcion
+            categorias[posActualizar].nombre = nombre;
+            categorias[posActualizar].descripcion = descripcion
             res.status(200).json({
                 estado: 1,
                 mensaje: "Categoría actualizada correctamente"
             });
-        }else{
+        } else {
             res.status(404).json({
-                estado:0,
-                mensaje:"Categoria no encontrada"
+                estado: 0,
+                mensaje: "Categoria no encontrada"
             })
         }
     }
-    
+
 
 })
 
@@ -168,7 +161,7 @@ app.delete('/socios/v1/categorias/:id', (req, res) => {
 
     // Buscar la posición de la categoría en el array 'categorias' por su ID
     const posEliminar = categorias.findIndex(categoria => categoria.id == id);
-    
+
     if (posEliminar != -1) {
         // Si se encontró la categoría con el ID buscado, eliminarla del array
         categorias.splice(posEliminar, 1);
@@ -183,10 +176,10 @@ app.delete('/socios/v1/categorias/:id', (req, res) => {
             mensaje: "Categoría no encontrada"
         });
     }
-    
+
 })
 
-app.listen(puerto, () =>{
+app.listen(puerto, () => {
     console.log('Servidor corriendo en el puerto: ', puerto);
 })
 
