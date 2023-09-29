@@ -38,7 +38,7 @@ app.get('/socios/v1/categorias', (req, res) => {
         res.status(404).json({
             estado: 0,
             mensaje: "No se encontraron categorias",
-            categories: categorias
+            categories: null
 
         })
 
@@ -115,17 +115,18 @@ app.post('/socios/v1/categorias', (req, res) => {
     }
 })
 
-app.put('/socios/v1/categorias/:id', (req, res) => {
-    // Actualizar un recurso - Actualizar una categoria
+// Actualizar un recurso - Actualizar una categoria
     //res.send('Actualizar una categoria por su id');
 
     //id viene ? -> 'params'
     //nombre y descripción ? -> 'body'
+    
+app.put('/socios/v1/categorias/:id', (req, res) => {
+    // Actualizar un recurso - Actualizar una categoria
     const { id } = req.params;
     const { nombre, descripcion } = req.body;
     //verificar que nombre y descripcion vengan en el body
     if (nombre == undefined || descripcion == undefined) {
-        //
         res.status(400).json({
             estado: 0,
             mensaje: "Faltan parametros en la solicitud"
@@ -148,8 +149,6 @@ app.put('/socios/v1/categorias/:id', (req, res) => {
             })
         }
     }
-
-
 })
 
 app.delete('/socios/v1/categorias/:id', (req, res) => {
