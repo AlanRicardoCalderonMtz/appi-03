@@ -180,4 +180,3 @@ app.delete('/socios/v1/categorias/:id', (req, res) => {
 app.listen(puerto, () => {
     console.log('Servidor corriendo en el puerto: ', puerto);
 })
-
