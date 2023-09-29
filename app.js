@@ -120,7 +120,7 @@ app.post('/socios/v1/categorias', (req, res) => {
 
     //id viene ? -> 'params'
     //nombre y descripción ? -> 'body'
-    
+
 app.put('/socios/v1/categorias/:id', (req, res) => {
     // Actualizar un recurso - Actualizar una categoria
     const { id } = req.params;
@@ -151,11 +151,10 @@ app.put('/socios/v1/categorias/:id', (req, res) => {
     }
 })
 
+    //res.send('Eliminar una categoria por su id');
+    // Obtener el ID de la categoría de los parámetros de la URL
 app.delete('/socios/v1/categorias/:id', (req, res) => {
     //Eliminar un recurso - Eliminar una categoria
-    //res.send('Eliminar una categoria por su id');
-
-    // Obtener el ID de la categoría de los parámetros de la URL
     const { id } = req.params;
 
     // Buscar la posición de la categoría en el array 'categorias' por su ID
